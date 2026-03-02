@@ -23,7 +23,7 @@ app.post('/api/generate-image', (req, res) => {
     // Solution: build the URL here and let the BROWSER load the image directly —
     // browser requests are never blocked by Cloudflare.
     const seed = Math.floor(Math.random() * 999999);
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
+    const imageUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
 
     res.json({ success: true, url: imageUrl });
 });
