@@ -11,6 +11,9 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
+// Get your free API key at: https://enter.pollinations.ai
+const POLLEN_KEY = process.env.POLLEN_KEY || ''; // set as Render env variable
+
 app.post('/api/generate-image', (req, res) => {
     const { prompt } = req.body;
     if (!prompt) {
@@ -19,11 +22,10 @@ app.post('/api/generate-image', (req, res) => {
 
     console.log(`Building image URL for: ${prompt}`);
 
-    // Pollinations blocks server-side fetches (Cloudflare 530) from datacenter IPs.
-    // Solution: build the URL here and let the BROWSER load the image directly —
-    // browser requests are never blocked by Cloudflare.
     const seed = Math.floor(Math.random() * 999999);
-    const imageUrl = `https://gen.pollinations.ai/image/${encodeURIComponent(prompt)}?width=1024&height=1024&seed=${seed}&nologo=true`;
+    const encoded = encodeURIComponent(prompt);
+    const keyParam = POLLEN_KEY ? `&key=${POLLEN_KEY}` : '';
+    const imageUrl = `https://gen.pollinations.ai/image/${encoded}?width=1024&height=1024&seed=${seed}&nologo=true&model=flux${keyParam}`;
 
     res.json({ success: true, url: imageUrl });
 });
